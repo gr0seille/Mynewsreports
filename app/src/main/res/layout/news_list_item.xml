@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingEnd="16dp"
     android:paddingLeft="16dp"
@@ -15,54 +15,40 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
         android:layout_weight="1"
-        android:orientation="vertical">
-
-
-
-        <TextView
-            android:id="@+id/web_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/textColorEarthquakeLocation"
-            android:textSize="16sp"
-            tools:text="Long placeholder location that should wrap to more than 2 lines of text" />
-
-        <TextView
-            android:id="@+id/section_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
-            android:maxLines="1"
-            android:textAllCaps="true"
-            android:textColor="@color/textColorEarthquakeDetails"
-            android:textSize="12sp"
-            tools:text="politics" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/web_publication_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:textColor="@color/textColorEarthquakeDetails"
+            android:textColor="@color/textColorDate"
             android:textSize="12sp"
             tools:text="Mar 6, 2010" />
 
+        <TextView
+            android:id="@+id/web_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textColor="@color/textColorArticle"
+            android:textSize="16sp"
+            tools:text="This is a very long title for my article so that I can test its presentation on more than three lines" />
+
+        <TextView
+            android:id="@+id/section_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-bold"
+            android:maxLines="1"
+            android:textAllCaps="true"
+            android:textColor="@color/textSectionColor"
+            android:textSize="12sp"
+            tools:text="politics"
+            android:layout_marginBottom="8dp"/>
 
     </LinearLayout>
+
+
 </LinearLayout>

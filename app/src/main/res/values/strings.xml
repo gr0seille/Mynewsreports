@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <!-- Title for the application. [CHAR LIMIT=12] -->
+    <!-- Title of the app-->
     <string name="app_name">Hot news</string>
 
 
-    <!-- TODO Text to display in the list when there are no earthquakes [CHAR LIMIT=NONE] -->
+    <!-- Text to display in the list when there are no articles -->
     <string name="no_news">¯\\_(ツ)_/¯ \n No luck ! Try another query.</string>
 
     <!-- Error message when there is no internet connectivity-->
@@ -34,8 +34,4 @@
     <string name="settings_order_by_relevance_label">Relevance</string>
     <string name="settings_order_by_relevance_value" translatable="false">relevance</string>
 
-    <!-- TODO Label for order-by oldest option -->
-    <!-- Label for order-by most relevant option -->
-    <string name="settings_order_by_oldest_label">Oldest</string>
-    <string name="settings_order_by_oldest_value" translatable="false">oldest</string>
 </resources>
