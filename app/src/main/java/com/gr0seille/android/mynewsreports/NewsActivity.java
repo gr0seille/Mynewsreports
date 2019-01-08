@@ -27,15 +27,15 @@ public class NewsActivity extends AppCompatActivity
 
     private static final String LOG_TAG = NewsActivity.class.getName();
 
-    /** URL for earthquake data from the USGS dataset */
-    private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query";
+    /** URL for earthquake data from the guardian API */
+    private static final String GUARDIAN_REQUEST_URL =
+            "https://content.guardianapis.com/search";
 
     /**
      * Constant value for the earthquake loader ID. We can choose any integer.
      * This really only comes into play if you're using multiple loaders.
      */
-    private static final int EARTHQUAKE_LOADER_ID = 1;
+    private static final int GUARDIAN_LOADER_ID = 1;
 
     /** Adapter for the list of earthquakes */
     private NewsAdapter mAdapter;
@@ -46,7 +46,7 @@ public class NewsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.earthquake_activity);
+        setContentView(R.layout.news_activity);
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
@@ -76,7 +76,7 @@ public class NewsActivity extends AppCompatActivity
                 News currentEarthquake = mAdapter.getItem(position);
 
                 // Convert the String URL into a URI object (to pass into the Intent constructor)
-                Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
+                Uri earthquakeUri = Uri.parse(currentEarthquake.getWebUrl());
 
                 // Create a new intent to view the earthquake URI
                 Intent websiteIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
@@ -101,7 +101,7 @@ public class NewsActivity extends AppCompatActivity
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+            loaderManager.initLoader(GUARDIAN_LOADER_ID, null, this);
         } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
@@ -128,7 +128,7 @@ public class NewsActivity extends AppCompatActivity
             loadingIndicator.setVisibility(View.VISIBLE);
 
             // Restart the loader to requery the USGS as the query settings have been updated
-            getLoaderManager().restartLoader(EARTHQUAKE_LOADER_ID, null, this);
+            getLoaderManager().restartLoader(GUARDIAN_LOADER_ID, null, this);
         }
     }
 
@@ -136,7 +136,7 @@ public class NewsActivity extends AppCompatActivity
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String minMagnitude = sharedPrefs.getString(
+        String query = sharedPrefs.getString(
                 getString(R.string.settings_min_magnitude_key),
                 getString(R.string.settings_min_magnitude_default));
 
@@ -145,13 +145,32 @@ public class NewsActivity extends AppCompatActivity
                 getString(R.string.settings_order_by_default)
         );
 
-        Uri baseUri = Uri.parse(USGS_REQUEST_URL);
+        Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
-        uriBuilder.appendQueryParameter("format", "geojson");
-        uriBuilder.appendQueryParameter("limit", "10");
-        uriBuilder.appendQueryParameter("minmag", minMagnitude);
-        uriBuilder.appendQueryParameter("orderby", orderBy);
+        //https://content.guardianapis.com/search?q=pancakes&api-key=test
+        // https://content.guardianapis.com/search
+        //?
+        //q=pancakes
+        //api-key=test
+
+//https://www.myawesomesite.com/turtles/types?type=1&sort=relevance#section-name
+//        Uri.Builder builder = new Uri.Builder();
+//        builder.scheme("https")
+//                .authority("www.myawesomesite.com")
+//                .appendPath("turtles")
+//                .appendPath("types")
+//                .appendQueryParameter("type", "1")
+//                .appendQueryParameter("sort", "relevance")
+//                .fragment("section-name");
+//        String myUrl = builder.build().toString();
+
+       // uriBuilder.appendQueryParameter("format", "geojson");
+        //uriBuilder.appendQueryParameter("limit", "10");
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("q", query);
+        uriBuilder.appendQueryParameter("api-key", "test");
+
 
         return new NewsLoader(this, uriBuilder.toString());
     }

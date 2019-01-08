@@ -1,13 +1,13 @@
 package com.gr0seille.android.mynewsreports;
 
 
-public class Earthquake {
+public class News {
     private String webUrl;
     private String sectionName;
     private String webTitle;
     private String webPublicationDate;
 
-    public Earthquake(String webUrl, String sectionName, String webTitle, String webPublicationDate) {
+    public News(String webUrl, String sectionName, String webTitle, String webPublicationDate) {
         this.webUrl = webUrl;
         this.sectionName = sectionName;
         this.webTitle = webTitle;

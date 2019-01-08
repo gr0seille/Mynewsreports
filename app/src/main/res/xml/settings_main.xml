@@ -25,7 +25,7 @@
 
     <EditTextPreference
         android:defaultValue="@string/settings_min_magnitude_default"
-        android:inputType="numberDecimal"
+        android:inputType="text"
         android:key="@string/settings_min_magnitude_key"
         android:selectAllOnFocus="true"
         android:title="@string/settings_min_magnitude_label" />

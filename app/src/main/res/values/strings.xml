@@ -33,9 +33,9 @@
     <string name="settings_title">Earthquake Settings</string>
 
     <!-- Strings For Minimum Magnitude Preference [CHAR LIMIT=30] -->
-    <string name="settings_min_magnitude_label">Minimum Magnitude</string>
-    <string name="settings_min_magnitude_key" translatable="false">min_magnitude</string>
-    <string name="settings_min_magnitude_default" translatable="false">6</string>
+    <string name="settings_min_magnitude_label">Query</string>
+    <string name="settings_min_magnitude_key" translatable="false">q</string>
+    <string name="settings_min_magnitude_default" translatable="false">cat</string>
 
     <!-- Strings For Order-By Preference [CHAR LIMIT=30] -->
     <string name="settings_order_by_label">Order By</string>
@@ -43,10 +43,12 @@
     <string name="settings_order_by_default" translatable="false">@string/settings_order_by_magnitude_value</string>
 
     <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
-    <string name="settings_order_by_magnitude_label">Magnitude</string>
-    <string name="settings_order_by_magnitude_value" translatable="false">magnitude</string>
+    <!-- TODO change this to newest -->
+    <string name="settings_order_by_magnitude_label">Newest</string>
+    <string name="settings_order_by_magnitude_value" translatable="false">newest</string>
 
     <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
-    <string name="settings_order_by_most_recent_label">Most Recent</string>
-    <string name="settings_order_by_most_recent_value" translatable="false">time</string>
+    <!-- TODO change this to relevance -->
+    <string name="settings_order_by_most_recent_label">Relevance</string>
+    <string name="settings_order_by_most_recent_value" translatable="false">relevance</string>
 </resources>
