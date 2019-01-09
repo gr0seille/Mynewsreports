@@ -27,17 +27,13 @@ public class NewsActivity extends AppCompatActivity
 
     private static final String LOG_TAG = NewsActivity.class.getName();
 
-    /** URL for earthquake data from the guardian API */
+    /** URL for data from the guardian API */
     private static final String GUARDIAN_REQUEST_URL =
             "https://content.guardianapis.com/search";
 
-    /**
-     * Constant value for the earthquake loader ID. We can choose any integer.
-     * This really only comes into play if you're using multiple loaders.
-     */
     private static final int GUARDIAN_LOADER_ID = 1;
 
-    /** Adapter for the list of earthquakes */
+    /** Adapter for the list of news */
     private NewsAdapter mAdapter;
 
     /** TextView that is displayed when the list is empty */
@@ -48,38 +44,31 @@ public class NewsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_activity);
 
-        // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        ListView newsListView = (ListView) findViewById(R.id.list);
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
-        earthquakeListView.setEmptyView(mEmptyStateTextView);
+        newsListView.setEmptyView(mEmptyStateTextView);
 
-        // Create a new adapter that takes an empty list of earthquakes as input
         mAdapter = new NewsAdapter(this, new ArrayList<News>());
 
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(mAdapter);
 
-        // Obtain a reference to the SharedPreferences file for this app
+        newsListView.setAdapter(mAdapter);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        // And register to be notified of preference changes
-        // So we know when the user has adjusted the query settings
+
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        // Set an item click listener on the ListView, which sends an intent to a web browser
-        // to open a website with more information about the selected earthquake.
-        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // Find the current earthquake that was clicked on
-                News currentEarthquake = mAdapter.getItem(position);
+                // Find the current element that was clicked on
+                News currentNewsElement = mAdapter.getItem(position);
 
                 // Convert the String URL into a URI object (to pass into the Intent constructor)
-                Uri earthquakeUri = Uri.parse(currentEarthquake.getWebUrl());
+                Uri newsUri = Uri.parse(currentNewsElement.getWebUrl());
 
-                // Create a new intent to view the earthquake URI
-                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
+                // Create a new intent to view the URI
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, newsUri);
 
                 // Send the intent to launch a new activity
                 startActivity(websiteIntent);
@@ -95,20 +84,12 @@ public class NewsActivity extends AppCompatActivity
 
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
-            // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
 
-            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-            // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(GUARDIAN_LOADER_ID, null, this);
         } else {
-            // Otherwise, display error
-            // First, hide loading indicator so error message will be visible
             View loadingIndicator = findViewById(R.id.loading_indicator);
             loadingIndicator.setVisibility(View.GONE);
-
-            // Update empty state with no connection error message
             mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
     }
@@ -127,7 +108,6 @@ public class NewsActivity extends AppCompatActivity
             View loadingIndicator = findViewById(R.id.loading_indicator);
             loadingIndicator.setVisibility(View.VISIBLE);
 
-            // Restart the loader to requery the USGS as the query settings have been updated
             getLoaderManager().restartLoader(GUARDIAN_LOADER_ID, null, this);
         }
     }
@@ -147,26 +127,6 @@ public class NewsActivity extends AppCompatActivity
 
         Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
-
-        //https://content.guardianapis.com/search?q=pancakes&api-key=test
-        // https://content.guardianapis.com/search
-        //?
-        //q=pancakes
-        //api-key=test
-
-//https://www.myawesomesite.com/turtles/types?type=1&sort=relevance#section-name
-//        Uri.Builder builder = new Uri.Builder();
-//        builder.scheme("https")
-//                .authority("www.myawesomesite.com")
-//                .appendPath("turtles")
-//                .appendPath("types")
-//                .appendQueryParameter("type", "1")
-//                .appendQueryParameter("sort", "relevance")
-//                .fragment("section-name");
-//        String myUrl = builder.build().toString();
-
-       // uriBuilder.appendQueryParameter("format", "geojson");
-        //uriBuilder.appendQueryParameter("limit", "10");
         uriBuilder.appendQueryParameter("order-by", orderBy);
         uriBuilder.appendQueryParameter("q", query);
         uriBuilder.appendQueryParameter("api-key", "test");
@@ -176,21 +136,20 @@ public class NewsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onLoadFinished(Loader<List<News>> loader, List<News> earthquakes) {
+    public void onLoadFinished(Loader<List<News>> loader, List<News> theNews) {
         // Hide loading indicator because the data has been loaded
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
-        // Set empty state text to display "No earthquakes found."
+        // Set empty state text to display
         mEmptyStateTextView.setText(R.string.no_news);
 
-        // Clear the adapter of previous earthquake data
+        // Clear the adapter of previous data
         mAdapter.clear();
 
-        // If there is a valid list of {@link News}s, then add them to the adapter's
-        // data set. This will trigger the ListView to update.
-        if (earthquakes != null && !earthquakes.isEmpty()) {
-            mAdapter.addAll(earthquakes);
+        // If there is a valid list of news, then add them to the adapter's
+        if (theNews != null && !theNews.isEmpty()) {
+            mAdapter.addAll(theNews);
         }
     }
 
